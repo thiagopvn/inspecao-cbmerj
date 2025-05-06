@@ -41,26 +41,26 @@ export const gbmList = [
       subsections: [
         {
           id: "1.1",
-          title: "Documentação Administrativa",
+          title: "Produção da SAD -  Gestão de documentos",
           items: [
             { id: "a", description: "Os assentamentos das Praças BM estão atualizados e devidamente assinados por autoridade competente? (serão verificadas, por amostragem, as folhas de alterações)" },
             { id: "b", description: "Os Boletins internos das OBMs e do CBA estão atualizados, lançados no portal e disponibilizados para a leitura?" },
             { id: "c", description: "Publicação em Boletim (no mês anterior ao de referência) da Escala de Expediente dos militares da atividade-meio?" },
             { id: "d", description: "Publicação em Boletim (no mês anterior ao de referência) da Escala de Serviço Operacional dos militares do expediente?" },
-            { id: "e", description: "O Plano de Chamada dos militares está atualizado e de acordo com o sistema DGP? (A atualização deve ser mensal e os endereços/telefones devem corresponder aos constantes no sistema)" },
-            { id: "f", description: "O Mapa da Força está atualizado e de acordo com o sistema DGP? (A atualização deve ser mensal e as informações devem corresponder às constantes no sistema)" },
+            { id: "e", description: "O Plano de Chamada dos militares está atualizado e de acordo com o sistema DGP? (A atualização deve ser mensal e os endereços/telefones devem corresponder ao informado no sistema DGP)" },
+            { id: "f", description: "O Mapa da Força está atualizado e de acordo com o sistema DGP? (A atualização deve ser mensal e as informações devem corresponder às constantes no sistema DGP)" },
             { id: "g", description: "Há Livro de Ordens (meio físico ou digital)?" }
           ]
         },
         {
           id: "1.2",
-          title: "Gestão de Pessoal",
+          title: "Sistema de controle e gerenciamento de pessoal",
           items: [
             { id: "a", description: "Controle de dispensa e licença para tratamento de saúde: é feita a publicação em Boletim Interno dos militares com DM/LTS? É feita a atualização e o controle?" },
-            { id: "b", description: "Controle de férias dos militares: Ocorre a publicação em Boletim Interno e o devido registro nos assentamentos do militar (meio físico e digital)? É realizada a atualização e o controle?" },
+            { id: "b", description: "Controle de férias dos militares: Ocorre a publicação em Boletim Interno e o devido registro nos assentamentos do militar (meio físico e digital)? É realizada a atualização e o lançamento no sistema DGP? Existe verificação de férias? Como ocorre?" },
             { id: "c", description: "Endereço e telefone dos militares devidamente atualizados? Como é verificado?" },
-            { id: "d", description: "Controle e verificação do lançamento de dados (sistema DGP) referentes à justiça e disciplina: é feita a publicação em Boletim Interno e inserção de dados no sistema?" },
-            { id: "e", description: "Os dados referentes aos militares são devidamente lançados no sistema DGP (Assentamentos) de forma a gerar Folha de Alterções com dados atualizados e fidedignos?" },
+            { id: "d", description: "Controle e verificação do lançamento de dados (sistema DGP) referentes à justiça e disciplina: é feita a publicação em Boletim Interno e inserção de dados no sistema DGP?" },
+            { id: "e", description: "Os dados referentes aos militares são devidamente lançados no sistema DGP (Assentamentos) de forma a gerar Folha de Alterções com dados atualizados e pertinentes?" },
             { id: "f", description: "O Mapa das Alas está atualizado?" },
             { id: "g", description: "Controle de distribuição do quantitativo de RAS da unidade. Como são realizados?" }
           ]
@@ -73,23 +73,17 @@ export const gbmList = [
       subsections: [
         {
           id: "2.1",
-          title: "Infraestrutura da AI",
+          title: "Produção e armazenamento de documentos",
           items: [
             { id: "a", description: "Rede de Acesso Internet?" },
             { id: "b", description: "Linha telefônica?" },
             { id: "c", description: "Email para uso exclusivo da AI?" },
             { id: "d", description: "Armazenamento de imagens em local de restrito acesso nas unidades em que houver circuito fechado de televisão (CFTV)?" }
           ]
-        }
-      ]
-    },
-    {
-      section: "B/3",
-      title: "ANÁLISE OPERACIONAL",
-      subsections: [
+        },
         {
           id: "3.1",
-          title: "Atividades da Seção",
+          title: "Produção de conhecimento operacional",
           items: [
             { id: "a", description: "Identificação das áreas de risco da área operacional para as guarnições?" },
             { id: "b", description: "Identificação das localidades com maior incidência de eventos?" },
@@ -99,7 +93,7 @@ export const gbmList = [
         },
         {
           id: "3.2",
-          title: "Documentação da Seção",
+          title: "Documentos produzidos e controlados",
           items: [
             { id: "a", description: "Assentamentos de Oficiais atualizado?" },
             { id: "b", description: "Plano de Segurança da OBM atualizado?" },
@@ -111,15 +105,149 @@ export const gbmList = [
             { id: "h", description: "Publicação em boletim dos militares da BM2 e AI?" },
             { id: "i", description: "Contato com a BM2/EMG (email, telefone do permanência e fixo)?" }
           ]
+        },
+        {
+          id: "4.1",
+          title: "Controle de Armamentos",
+          items: [
+            { id: "a", description: "Local para guarda de armamento de militares de serviço?" },
+            { id: "b", description: "Controle e armazenamento de armamento institucionais e particulares?" },
+            { id: "c", description: "Rotina e controle de acautelamento de arma particular de militares de serviço?" }
+          ]
         }
       ]
     },
     {
-      section: "B/4",
-      title: "ARMAMENTO",
+      section: "B/3",
+      title: "OPERAÇÕES",
       subsections: [
         {
+          id: "1.1",
+          title: "Recepção da autoridade inspecionante",
+          items: [
+            { id: "a", description: "Execução do pique de alerta e anúncio verbal da chegada da autoridade" },
+            { id: "b", description: "Toque de corneta da maior autoridade presente?" },
+            { id: "c", description: "Apresentação da Guarda pelo Comandante da Guarda?" },
+            { id: "d", description: "Brado geral e acionamento dos dispositivos sonoros e de iluminação das viaturas" },
+            { id: "e", description: "Apresentação da tropa pelo Comandante da Unidade" },
+            { id: "f", description: "Esmero da tropa na formatura" }
+          ]
+        },
+        {
+          id: "2.1",
+          title: "Hasteamento do Pavilhão Nacional",
+          items: [
+            { id: "a", description: "Cerimônia de hasteamento do Pavilhão Nacional" },
+            { id: "b", description: "Todo contigente formado (Oficiais e praças de serviço e expediente)?" },
+            { id: "c", description: "Cânticos dos hinos e ou canções por todos os militares presentes na formatura?" },
+            { id: "d", description: "Boa conservação de Pavilhão Nacional?" },
+            { id: "e", description: "Boa conservação de outros símbolos (Bandeira do Estado e flâmula do Cmt)?" }
+          ]
+        },
+        {
+          id: "3.1",
+          title: "Produção de documentos",
+          items: [
+            { id: "a", description: "QTS atualizado e exposto em local visível" },
+            { id: "b", description: "Cópia das Operações simuladas (últimos 2 anos)" },
+            { id: "c", description: "Cópias dos Planos (Emprego, Chamada, Seção) arquivadas na SsCO/Sala do Oficial de Dia (último ano)?" },
+            { id: "d", description: "Relatório Mensal das instruções (Oficiais e Praças)?" },
+            { id: "e", description: "Quesitos e Certidões de Ocorrência (Controle)?" },
+            { id: "e", description: "Quesitos e Certidões de Ocorrência (Informações sobre condições de segurança contra incêndio e pânico dos locais sinistrados)?" },
+            { id: "e", description: "Integração SOP/SST (Se a SOP informa a SST sobre as condições de SCIP das edificações e áreas de risco, registradas nos quesitos)?" },
+            { id: "e", description: "Plano de Operações conforme NPCI?" },
+            { id: "e", description: "Extrato do Plano de Operações acessível no telefone funcional do Comandante de SOS" },
+            { id: "e", description: "Planejamento quanto a organização e execução dos recursos disponíveis para a execução do TOD?" },
+            { id: "e", description: "Relatório de análises dos testes operacionais diários?" },
+            { id: "e", description: "Arquivamento das fichas de registros do TOD?" },
+          ]
+        },
+        {
           id: "4.1",
+          title: "Teste Operacional Diário (TOD)",
+          items: [
+            { id: "a", description: "Execução do TOD?" },
+            { id: "b", description: "Supervisão do TOD?" },
+            { id: "c", description: "Estabelecimento das viaturas de socorro?" },
+            { id: "d", description: "Utilização correta do POP?" },
+            { id: "e", description: "Houve utilização de rádios no TOD?" },
+            { id: "f", description: "Utilizaram corretamente a roupa de aproximação?" },
+            { id: "g", description: "Utilizaram corretamente os equipamento de proteção respiratória (EPR)?" },
+            { id: "h", description: "Manusearam corretamente a motossera ou o moto rebolo?" },
+            { id: "i", description: "No item anterior, utilizaram o EPI correto?" },
+            { id: "j", description: "Manusearam corretamente o Desencarcerador?" },
+            { id: "k", description: "No item anterior, utilizaram o EPI correto?" },
+            { id: "l", description: "Utilização correta da técnica denominada Bomba Armar para montar duas linhas, com uma mangueira na ligação e uma em cada linha?" },
+            { id: "m", description: "No item anterior, utilizaram o EPI correto?" },
+            { id: "n", description: "Utilização correta das técnicas de mobilização e transporte de vítimas até o interior da ASE?" },
+            { id: "o", description: "No item anterior, utilizaram o EPI correto?" },
+            { id: "p", description: "TOD está no SISGEO? (Escolher um mês para fazer a conferência)" }
+          ]
+        },
+        {
+          id: "5.1",
+          title: "ÁREA OPERACIONAL",
+          items: [
+            { id: "a", description: "O mapa da área operacional está acessível aos militares de serviço na Subseção de Controle Operacional?" },
+            { id: "b", description: "A demarcação da área operacional no mapa operacional?" },
+            { id: "c", description: "A demarcação dos recursos hídricos no mapa operacional?" },
+            { id: "d", description: "A demarcação dos Pontos Críticos relevantes?" },
+            { id: "e", description: "A demarcação de outros recursos disponíveis (hospitais, UBM, BPM, DP, etc...)?" }
+          ]
+        },
+        {
+          id: "6.1",
+          title: "PROCEDIMENTO DE ACIONAMENTO DO SOCORRO",
+          items: [
+            { id: "a", description: "Execução do carrilhão e brado de alerta?" },
+            { id: "b", description: "Descrição da solicitação de socorro através do sistema de som da UBM ?" },
+            { id: "c", description: "Brado final?" },
+            { id: "d", description: "Deslocamento dos bombeiros militares com presteza?" },
+            { id: "e", description: "Sonorização e Iluminação das Viaturas?" },
+            { id: "f", description: "Tempo de saída do Socorro conforme as normas vigentes?" }
+          ]
+        },
+        {
+          id: "7.1",
+          title: "INSTALAÇÕES DA SUBSEÇÃO DE CONTROLE OPERACIONAL (SsCO)",
+          items: [
+            { id: "a", description: "Ambiente ergonômico?" },
+            { id: "b", description: "Notas publicadas e POPs disponibilizados aos operadores ?" },
+            { id: "c", description: "Todos os Militares capacitados pelo COCBMERJ?" },
+            { id: "d", description: "Pleno acesso ao sistema de despacho de viaturas on call?" },
+            { id: "e", description: "Pleno acesso ao sistema de monitoramento, estatísticas e relatórios SisGeO?" },
+            { id: "f", description: "Telefones 193 e linhas privativas operando?" },
+            { id: "g", description: "Visualização do pátio de viaturas operacionais?" },
+            { id: "h", description: "Visualização das instalações da OBM por CFTV?" },
+            { id: "i", description: "Arquivo na SsCO da descrição da rede de abastecimento Pública de água?" },
+            { id: "j", description: "Sistema de recebimento e despacho de vtrs em funcionamento?" }
+          ]
+        },
+        {
+          id: "8.1",
+          title: "VIATURAS OPERACIONAIS",
+          items: [
+            { id: "a", description: "A relação dos bombeiros militares de serviço foram lançadas no SISGEO?" },
+            { id: "b", description: "A GRD está lançada no SISGEO?" }
+          ]
+        },
+        {
+          id: "9.1",
+          title: "RECURSOS HÍDRICOS",
+          items: [
+            { id: "a", description: "Relatório de corrida de área?" },
+            { id: "b", description: "Cadastramento do Recursos Hídricos no SisGeO?" }
+          ]
+        },
+
+      ]
+    },
+    {
+      section: "B/4",
+      title: "LOGÍSTICA",
+      subsections: [
+        {
+          id: "1.1",
           title: "Controle de Armamentos",
           items: [
             { id: "a", description: "Local para guarda de armamento de militares de serviço?" },
