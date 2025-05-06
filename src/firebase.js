@@ -14,7 +14,8 @@ import {
   Timestamp, 
   orderBy,
   serverTimestamp,
-  deleteDoc
+  deleteDoc,
+  writeBatch
 } from 'firebase/firestore';
 import { 
   getAuth, 
@@ -25,20 +26,29 @@ import {
   updateProfile 
 } from 'firebase/auth';
 
-// Configuração do Firebase fornecida pelo usuário
+// Configuração do Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDlTmgi_YLgjv0qkb-7LraNHAcp15lksUw",
-    authDomain: "inspecao-cbmerj.firebaseapp.com",
-    projectId: "inspecao-cbmerj",
-    storageBucket: "inspecao-cbmerj.firebasestorage.app",
-    messagingSenderId: "249073941601",
-    appId: "1:249073941601:web:2ae450c26213ab2ce87e20",
-    measurementId: "G-7EFXNTJJZQ"
-  };
+  apiKey: "AIzaSyDlTmgi_YLgjv0qkb-7LraNHAcp15lksUw",
+  authDomain: "inspecao-cbmerj.firebaseapp.com",
+  projectId: "inspecao-cbmerj",
+  storageBucket: "inspecao-cbmerj.appspot.com",
+  messagingSenderId: "249073941601",
+  appId: "1:249073941601:web:2ae450c26213ab2ce87e20",
+  measurementId: "G-7EFXNTJJZQ"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics = null;
+
+// Verificar se estamos no navegador (não em SSR) antes de inicializar o analytics
+if (typeof window !== 'undefined') {
+  try {
+    analytics = getAnalytics(app);
+  } catch (error) {
+    console.error('Analytics não pôde ser inicializado:', error);
+  }
+}
 
 // Initialize Firestore and Auth
 const db = getFirestore(app);
@@ -113,10 +123,10 @@ export const onAuthStateChange = (callback) => {
 
 // GBM Operations
 /**
- * Get all GBM units
- * @returns {Promise<Array>} - Array of GBM objects
+ * Obter todos os GBMs do Firestore
+ * @returns {Promise<Array>} - Array de objetos GBM
  */
-export const getAllGBMs = async () => {
+export const getAllGBMsFromFirestore = async () => {
   try {
     const q = query(collection(db, "gbms"), orderBy("nome"));
     const querySnapshot = await getDocs(q);
@@ -131,7 +141,7 @@ export const getAllGBMs = async () => {
     
     return gbms;
   } catch (error) {
-    console.error("Error getting GBMs:", error);
+    console.error("Erro ao buscar GBMs:", error);
     throw error;
   }
 };
@@ -156,6 +166,106 @@ export const getGBMById = async (gbmId) => {
     }
   } catch (error) {
     console.error("Error getting GBM:", error);
+    throw error;
+  }
+};
+
+/**
+ * Adicionar um novo GBM ao Firestore
+ * @param {Object} gbmData - Dados do GBM (nome, endereco, etc)
+ * @returns {Promise<string>} - ID do GBM criado
+ */
+export const addGBM = async (gbmData) => {
+  try {
+    const docRef = await addDoc(collection(db, "gbms"), {
+      ...gbmData,
+      createdAt: serverTimestamp()
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Erro ao adicionar GBM:", error);
+    throw error;
+  }
+};
+
+/**
+ * Atualizar um GBM existente
+ * @param {string} gbmId - ID do documento do GBM
+ * @param {Object} gbmData - Novos dados do GBM
+ * @returns {Promise<void>}
+ */
+export const updateGBM = async (gbmId, gbmData) => {
+  try {
+    const gbmRef = doc(db, "gbms", gbmId);
+    await updateDoc(gbmRef, {
+      ...gbmData,
+      updatedAt: serverTimestamp()
+    });
+    return true;
+  } catch (error) {
+    console.error("Erro ao atualizar GBM:", error);
+    throw error;
+  }
+};
+
+/**
+ * Excluir um GBM
+ * @param {string} gbmId - ID do documento do GBM
+ * @returns {Promise<void>}
+ */
+export const deleteGBM = async (gbmId) => {
+  try {
+    // Verificar se o GBM está sendo usado em alguma inspeção
+    const inspectionsQuery = query(collection(db, "inspecoes"), where("gbmId", "==", gbmId));
+    const inspectionsSnap = await getDocs(inspectionsQuery);
+    
+    if (!inspectionsSnap.empty) {
+      throw new Error("Este GBM não pode ser excluído pois está associado a inspeções existentes.");
+    }
+    
+    // Se não há inspeções usando o GBM, excluí-lo
+    const gbmRef = doc(db, "gbms", gbmId);
+    await deleteDoc(gbmRef);
+    return true;
+  } catch (error) {
+    console.error("Erro ao excluir GBM:", error);
+    throw error;
+  }
+};
+
+/**
+ * Migrar dados de GBM da lista estática para o Firestore (executar apenas uma vez)
+ * @param {Array} gbmList - Lista estática de GBMs do arquivo data.js
+ * @returns {Promise<void>}
+ */
+export const migrateGBMsToFirestore = async (gbmList) => {
+  try {
+    // Verificar se já existem GBMs no Firestore
+    const existingGBMs = await getAllGBMsFromFirestore();
+    
+    if (existingGBMs.length > 0) {
+      console.log("Migração não necessária: já existem GBMs no Firestore");
+      return false;
+    }
+    
+    // Adicionar cada GBM ao Firestore
+    const batch = writeBatch(db);
+    
+    gbmList.forEach(gbm => {
+      const gbmRef = doc(collection(db, "gbms"));
+      batch.set(gbmRef, {
+        numeroGBM: gbm.id,
+        nome: gbm.name,
+        endereco: gbm.endereco || "",
+        createdAt: serverTimestamp()
+      });
+    });
+    
+    await batch.commit();
+    console.log("Migração de GBMs concluída com sucesso");
+    return true;
+  } catch (error) {
+    console.error("Erro na migração de GBMs:", error);
     throw error;
   }
 };
