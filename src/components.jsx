@@ -470,8 +470,8 @@ export function InspectionList({ inspections, onNewInspection, onViewInspection 
   );
 }
 
-// Componente Nova Inspeção
-export function NewInspection({ gbmList, onCancel, onSelect, onStartInspection, selectedGBM }) {
+// Componente Nova Inspeção - ATUALIZADO
+export function NewInspection({ gbmList, onCancel, onSelect, onStartInspection, selectedGBM, isLoading }) {
   const [searchTerm, setSearchTerm] = useState('');
   
   // Filtrar GBMs
@@ -557,19 +557,29 @@ export function NewInspection({ gbmList, onCancel, onSelect, onStartInspection, 
         <div className="card-footer">
           <button 
             onClick={() => onStartInspection(selectedGBM)} 
-            disabled={!selectedGBM} 
+            disabled={!selectedGBM || isLoading} 
             className="btn btn-primary"
           >
-            <svg className="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            Iniciar Inspeção
+            {isLoading ? (
+              <>
+                <div className="spinner-small"></div>
+                Criando Inspeção...
+              </>
+            ) : (
+              <>
+                <svg className="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Iniciar Inspeção
+              </>
+            )}
           </button>
         </div>
       </div>
     </div>
   );
 }
+
 
 // Componente Detalhes da Inspeção
 export function InspectionDetails({ inspection, onBack, onUpdateItem, onFinalize }) {

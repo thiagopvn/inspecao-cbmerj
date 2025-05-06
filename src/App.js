@@ -10,7 +10,9 @@ import {
   query, 
   where, 
   Timestamp, 
-  orderBy 
+  orderBy,
+  writeBatch,
+  serverTimestamp
 } from 'firebase/firestore';
 
 // Importar componentes do arquivo components.jsx
@@ -52,6 +54,7 @@ function App() {
   const [selectedInspection, setSelectedInspection] = useState(null);
   const [selectedGBM, setSelectedGBM] = useState(null);
   const [firebaseGBMs, setFirebaseGBMs] = useState([]);
+  const [isStartingInspection, setIsStartingInspection] = useState(false);
 
   // Verificar estado de autenticação ao carregar
   useEffect(() => {
@@ -124,7 +127,13 @@ function App() {
 
   // Iniciar nova inspeção
   const startNewInspection = async (gbmId) => {
+    // Evitar múltiplas chamadas
+    if (isStartingInspection) return;
+    
     try {
+      setIsStartingInspection(true);
+      setError(null);
+      
       // Usar GBMs do Firestore se disponíveis, senão usar a lista estática
       let gbmData;
       if (firebaseGBMs.length > 0) {
@@ -154,17 +163,36 @@ function App() {
           conformidade: 0
         });
         
+        // Usar um batch para adicionar itens em lote (mais eficiente)
+        const batch = writeBatch(db);
+        let batchCount = 0;
+        
         for (const subsection of section.subsections) {
           for (const item of subsection.items) {
-            await addDoc(collection(db, "inspecoes", inspectionRef.id, "secoes", sectionRef.id, "itens"), {
+            const itemRef = doc(collection(db, "inspecoes", inspectionRef.id, "secoes", sectionRef.id, "itens"));
+            batch.set(itemRef, {
               subsecaoId: subsection.id,
               subsecaoTitulo: subsection.title,
               codigo: item.id,
               descricao: item.description,
               status: "Pendente",
-              observacao: ""
+              observacao: "",
+              createdAt: serverTimestamp()
             });
+            
+            batchCount++;
+            
+            // Firestore tem limite de 500 operações por batch
+            if (batchCount >= 450) {
+              await batch.commit();
+              batchCount = 0;
+            }
           }
+        }
+        
+        // Commit de qualquer operação restante
+        if (batchCount > 0) {
+          await batch.commit();
         }
       }
       
@@ -174,6 +202,8 @@ function App() {
     } catch (error) {
       console.error("Erro ao criar inspeção:", error);
       setError("Não foi possível criar uma nova inspeção. Tente novamente.");
+    } finally {
+      setIsStartingInspection(false);
     }
   };
 
@@ -329,6 +359,7 @@ function App() {
           onSelect={setSelectedGBM}
           onStartInspection={startNewInspection}
           selectedGBM={selectedGBM}
+          isLoading={isStartingInspection}
         />;
       case 'inspection-details':
         return <InspectionDetails 
