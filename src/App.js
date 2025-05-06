@@ -220,10 +220,14 @@ function App() {
           sections: []
         };
         
-        // Buscar seções
-        const sectionsQuery = query(collection(db, "inspecoes", inspectionId, "secoes"));
+        // Buscar seções com ordenação pelo código
+        const sectionsQuery = query(
+          collection(db, "inspecoes", inspectionId, "secoes"),
+          orderBy("codigo", "asc") // Ordenar pelo código da seção (B/1, B/2, etc)
+        );
         const sectionsSnap = await getDocs(sectionsQuery);
         
+        // Resto do código permanece igual...
         for (const sectionDoc of sectionsSnap.docs) {
           const section = {
             id: sectionDoc.id,
@@ -231,7 +235,7 @@ function App() {
             items: []
           };
           
-          // Buscar itens
+          // Buscar itens para esta seção
           const itemsQuery = query(collection(db, "inspecoes", inspectionId, "secoes", sectionDoc.id, "itens"));
           const itemsSnap = await getDocs(itemsQuery);
           
