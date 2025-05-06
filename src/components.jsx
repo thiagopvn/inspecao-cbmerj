@@ -587,8 +587,22 @@ export function InspectionDetails({ inspection, onBack, onUpdateItem, onFinalize
   const [editingItem, setEditingItem] = useState(null);
   const [itemStatus, setItemStatus] = useState('');
   const [itemObservacao, setItemObservacao] = useState('');
+
+  // No início da função InspectionDetails
+useEffect(() => {
+  // Ordenar as seções por código se estiverem disponíveis
+  if (inspection && inspection.sections) {
+    inspection.sections.sort((a, b) => {
+      // Extrair os números da seção (ex: "B/1" -> 1)
+      const numA = parseInt(a.codigo.split('/')[1]);
+      const numB = parseInt(b.codigo.split('/')[1]);
+      return numA - numB;
+    });
+  }
+}, [inspection]);
   
   useEffect(() => {
+    
     // Inicializar todas as seções como expandidas
     if (inspection && inspection.sections) {
       const initialExpandedState = {};
